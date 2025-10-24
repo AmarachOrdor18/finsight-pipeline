@@ -1,1 +1,37 @@
+name: Trigger n8n Financial Pipeline
 
+on:
+  schedule:
+    # Runs every 6 hours (to stay within API limits)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  trigger-stock-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Stock Data Workflow
+        run: |
+          curl -X POST "${{ secrets.N8N_STOCK_WEBHOOK_URL }}"
+  
+  trigger-crypto-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Crypto Data Workflow
+        run: |
+          curl -X POST "${{ secrets.N8N_CRYPTO_WEBHOOK_URL }}"
+  
+  trigger-forex-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Forex Data Workflow
+        run: |
+          curl -X POST "${{ secrets.N8N_FOREX_WEBHOOK_URL }}"
+
+  trigger-daily-report:
+    runs-on: ubuntu-latest
+    if: github.event.schedule == '0 9 * * *' # Only at 9 AM UTC
+    steps:
+      - name: Trigger Daily Report
+        run: |
+          curl -X POST "${{ secrets.N8N_DAILY_REPORT_WEBHOOK_URL }}"
