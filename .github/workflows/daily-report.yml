@@ -13,12 +13,3 @@ jobs:
       - name: Trigger Daily Report Workflow
         run: |
           curl -X POST "${{ secrets.N8N_DAILY_REPORT_WEBHOOK_URL }}"
-```
-
-5. Add secrets to repository:
-   - Go to Settings → Secrets and variables → Actions
-   - Add new repository secrets (we'll populate webhook URLs later):
-     - `N8N_STOCK_WEBHOOK_URL`
-     - `N8N_CRYPTO_WEBHOOK_URL`
-     - `N8N_FOREX_WEBHOOK_URL`
-     - `N8N_DAILY_REPORT_WEBHOOK_URL`
